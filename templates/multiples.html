@@ -2,11 +2,37 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-4 problem-description">
-            <div>home sweet home</div>
+        <div class="col-8 problem-description">
+            <div class="container">
+                <div class="col">
+                    <section>
+                        <h2>Problem:</h2><br>
+                        <p>Write a program that prints the numbers from 1 to 100. But for multiples of three print
+                            “Three” instead of the number and for the multiples of five print “Five”. For numbers which
+                            are multiples of both three and five print “ThreeFive”</p>
+                    </section>
+                    <section>
+                        <h2>Code:</h2> <var>(Python 3)</var></br></br>
+
+                        <pre><code>def multiples_three_five(below):
+        yield (['ThreeFive' if n % 3 == 0 and n % 5 == 0 else 'Three' if n % 3 == 0 else
+            'Five' if n % 5 == 0 else n for n in range(1, below+1)])
+                        </code></pre>
+                    </section>
+                </div>
+            </div>
         </div>
-        <div class="col-8 solution">
-            <div>home sweet home</div>
+        <div class="col-4 solution">
+            <div class="container">
+                <div class="col">
+                    <h2>Results:</h2>
+                    <ol style="list-style: decimal inside;">
+                        {% for multiple in multiples %}
+                            <li>{{ multiple }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
         </div>
     </div>
 

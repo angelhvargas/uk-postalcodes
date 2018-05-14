@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="row">
+        <div class="col-4 problem-description">
+            <div>
+                <h2>Description:</h2>
+            </div>
+        </div>
+        <div class="col-8 solution">
+            <div></div>
+        </div>
+    </div>
+
+{% endblock %}
