@@ -8,7 +8,14 @@
             </div>
         </div>
         <div class="col-8 solution">
-            <div></div>
+            <h2>Solutions:</h2>
+            <div>
+                <ul>
+                    {% for pc in postalcodes %}
+                        <li><span>{{ pc.postcode }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 

@@ -1,8 +1,11 @@
 from flask import render_template
 from flask import Flask
-import json, os
+from flask import request
+import json
+import os
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def home():
@@ -25,12 +28,18 @@ def multiples():
 @app.route('/postal-codes')
 def postal_codes():
     def format_codes():
-        filename = os.path.join(app.static_folder, 'storage/postal_codes.json')
-        with open(filename) as postal_codes:
-            data = json.load(postal_codes)
+        filename = os.path.join(os.path.dirname(__file__), 'storage/postal_codes.json')
+        with open(filename, encoding='utf-8') as postal_codes:
+            data = json.loads(postal_codes.read())
         return data
 
     return render_template('postal-codes.html', title='UK - Postal Codes', postalcodes=format_codes())
+
+
+@app.route('/postal-codes/filter', methods=['POST'])
+def post_codes_filter():
+    to_filter = request.form('postal-code')
+    return json.dump({'success': {'foo': 'bar'}})
 
 
 if __name__ == '__main__':
