@@ -1,5 +1,5 @@
-from functools import partial
 import re
+from functools import partial
 
 
 THIRD_PART_ONLY = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'S','T', 'U', 'W']
@@ -15,10 +15,10 @@ POSTAL_ZONES = ['AB', 'AL', 'B', 'BA', 'BB', 'BD', 'BH', 'BL', 'BN', 'BR', 'BS',
                 'SA', 'SE', 'SG', 'SK', 'SL', 'SM', 'SN', 'SO', 'SP', 'SR', 'SS', 'ST', 'SW', 'SY', 'TA', 
                 'TD', 'TF', 'TN', 'TQ', 'TR', 'TS', 'TW', 'UB', 'W', 'WA', 'WC', 'WD', 'WF', 'WN', 'WR',
                 'WS', 'WV', 'YO', 'ZE']
-#single character postal zone case
+# single character postal zone case
 SINGLE_CHAR_PS = [zone for zone in POSTAL_ZONES if len(zone) == 1]
+# double character postal zone case
 DOUBLE_CHAR_PS = [zone for zone in POSTAL_ZONES if len(zone) == 2]
-# code extracted from http://code.activestate.com/recipes/279004-parsing-a-uk-postcode/
 OUTCODE_REGX = (r'(' +
                    r'(?:(?:' +
                    '|'.join(SINGLE_CHAR_PS) +
@@ -42,37 +42,6 @@ STANDALONE_OUTCODE_PATTERN = OUTCODE_REGX + r'\s*$'
 
 POSTCODE_REGEX = re.compile(POSTCODE_PATTERN)
 STANDALONE_OUTCODE_REGEX = re.compile(STANDALONE_OUTCODE_PATTERN)
-PARTS = {
-    'fst': 'ABCDEFGHIJKLMNOPRSTUWYZ',
-    'sec': 'ABCDEFGHKLMNOPQRSTUVWXY',
-    'thd': 'ABCDEFGHJKPSTUW',
-    'fth': 'ABEHMNPRVWXY',
-    'inward': 'ABDEFGHJLNPQRSTUWXYZ',
-}
-
-POSTCODE_REG_COMPLETE = re.compile('|'.join([r.format(**PARTS) for r in (
-    '^[{fst}][1-9]\d[{inward}][{inward}]$',
-    '^[{fst}][1-9]\d\d[{inward}][{inward}]$',
-    '^[{fst}][{sec}]\d\d[{inward}][{inward}]$',
-    '^[{fst}][{sec}][1-9]\d\d[{inward}][{inward}]$',
-    '^[{fst}][1-9][{thd}]\d[{inward}][{inward}]$',
-    '^[{fst}][{sec}][1-9][{fth}]\d[{inward}][{inward}]$',
-)]))
-
-POSTCODE_REG_PARTIAL = re.compile('|'.join([r.format(**PARTS) for r in (
-    '^[{fst}][1-9]$',
-    '^[{fst}][1-9]\d$',
-    '^[{fst}][{sec}]\d$',
-    '^[{fst}][{sec}][1-9]\d$',
-    '^[{fst}][1-9][{thd}]$',
-    '^[{fst}][{sec}][1-9][{fth}]$',
-)]))
-
-
-def _match_postcode(regex, pc, extra_postcodes=()):
-    if pc in extra_postcodes:
-        return True
-    return regex.match(pc) is not None
 
 
 def postcode_parser(postcode, incode_mandatory=True):
@@ -100,8 +69,7 @@ def postcode_parser(postcode, incode_mandatory=True):
         else:
             return 'TS9', ''
 
-    raise ValueError('Invalid postcode')
+    raise ValueError('UK postal code invalid')
 
 
 parse_format = partial(postcode_parser)
-is_valid = partial(_match_postcode, POSTCODE_REG_COMPLETE)
