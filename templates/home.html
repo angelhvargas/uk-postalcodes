@@ -1,21 +1,30 @@
 {% extends "base.html" %}
-
+{% set active_page = "home" %}
 {% block content %}
-    <div class="row">
-        <div class="col-sm">
-            <div class="container">
-                <div class="row">
-                    <h3>Technical assessment</h3><br>
-                    <p></p>
-                    <h5>Angel Vargas</h5>
+    <div class="row justify-content-md-cente">
+        <div class="col-sm-8">
+            <article>
+                <header>Technical assessment</header>
+                <code>
+                    1. Write a program that prints the numbers from 1 to 100. But for multiples of three print “Three” instead of the number and for the multiples of five print “Five”. For numbers which are multiples of both three and five print “ThreeFive”.<br><br>
+                    2. Write a library that supports validating and formatting post codes for UK. The details of which post codes are valid and which are the parts they consist of can be found at https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom#Formatting. The API that this library provides is your choice.
+                </code><br><br><br>
+                <p><small><strong>Author:</strong> Angel Vargas<br>
+                LinkedIn profile: <a href="https://www.linkedin.com/in/angelhvargas/">https://www.linkedin.com/in/angelhvargas/</a><br></small></p>
 
-                </div>
+            </article>
+            <article>
+                <header>Instructions to check the solutions</header>
+    <pre><code>
+    1. check the tabs links at the header of this page to navigate to the desired solution.
+    2. you can check the code base in the GitHub repo: https://github.com/angelhvargas/scurri
+    3. this implementation is hosted in Amazon Web Services using a AWS Lambda
+    4. Framework used: Flask (latest version)
+    </code></pre><br><br><br>
+                <p><small><strong>Author:</strong> Angel Vargas<br>
+                LinkedIn profile: <a href="https://www.linkedin.com/in/angelhvargas/">https://www.linkedin.com/in/angelhvargas/</a><br></small></p>
 
-            </div>
-
-        </div>
-        <div class="col-lg">
-            <div>home sweet home</div>
+            </article>
         </div>
     </div>
 {% endblock %}
