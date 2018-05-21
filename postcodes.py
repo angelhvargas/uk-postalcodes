@@ -56,7 +56,7 @@ OUTWARD_PATTERN = (r'(' +
                    ''.join(FOURTH_PART_ONLY) +
                    r']|[1-9]{1,2}))' +
                    r'|(?:(?:' + '|'.join(SINGLE_DIGIT_AREAS) + ')\d{1})'
-                   r'|(?:(?:' + '|'.join(DOUBLE_DIGIT_AREAS) + ')(?:[1-9][1-9]{0,2}))'
+                   r'|(?:(?:' + '|'.join(DOUBLE_DIGIT_AREAS) + ')(?:[1-9][1-9]{1,2}))'
                    r'|(?:(?:' + '|'.join(DISTRICT_ZERO_AREAS) + ')[0-9])'
                    r'|(?:BS(?:[1-9][0-9]))'
                    r')')
