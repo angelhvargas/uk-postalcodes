@@ -58,7 +58,7 @@ OUTWARD_PATTERN = (r'(' +
                    r'|(?:(?:' + '|'.join(SINGLE_DIGIT_AREAS) + ')\d{1})'
                    r'|(?:(?:' + '|'.join(DOUBLE_DIGIT_AREAS) + ')(?:[1-9][1-9]{1,2}))'
                    r'|(?:(?:' + '|'.join(DISTRICT_ZERO_AREAS) + ')[0-9])'
-                   r'|(?:BS(?:[1-9][0-9]))'
+                   r'|(?:BS[0-9]{0,2})'
                    r')')
 # incode
 INWARD_PATTERN = (r'(\d[' +
