@@ -65,7 +65,7 @@ OUTCODE_REGX = (r'(' +
                 ''.join(FOURTH_PART_ONLY) +
                 r']|[1-9]{1,2}))' +
                 r'|(?:(?:' + '|'.join(SINGLE_DIGIT_AREAS) + ')\d{1})'
-                r'|(?:(?:' + '|'.join(DOUBLE_DIGIT_AREAS) + ')\d[1-9][1-9]{0,1})'
+                r'|(?:(?:' + '|'.join(DOUBLE_DIGIT_AREAS) + ')[1-9][1-9]{1,2})'
                 r'|(?:(?:' + '|'.join(DISTRICT_ZERO_AREAS) + ')[0-9])'
                 r'|(?:BS(?:[0-9]{0,2}))'
                 r')')
@@ -107,7 +107,7 @@ def postcode_parser(postcode, incode_mandatory=True):
         else:
             return 'TS9', ''
 
-    raise ValueError('UK postal code invalid')
+    raise ValueError('UK postcode invalid')
 
 
 parse_format = partial(postcode_parser)
@@ -126,7 +126,7 @@ parse_format = partial(postcode_parser)
                       </button>
                     </div>
                 {% elif post_results.valid == True %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">Your UK postal code is valid
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">Your UK postcode is valid
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -134,12 +134,12 @@ parse_format = partial(postcode_parser)
                 {% endif %}
             {% endif %}
             <div class="card">
-                <div class="card-header">UK postal code validator</div>
+                <div class="card-header">UK postcode validator</div>
 
                 <div class="card-body">
                     <form class="col-md-auto form-horizontal" action="{{ url_for('postal_codes_form') }}" method="post" name="formatPostCodes">
                         <div class="form-group">
-                            <label for="postal_code">Check UK Postal code</label>
+                            <label for="postal_code">Check UK postcode</label>
                             <input type="text" class="form-control" aria-describedby="postalCode" name="postal_code" id="postal_code" placeholder="i.e. TS9 7BQ">
                         </div>
                         <button type="submit" class="btn btn-primary">Validate</button>
@@ -149,7 +149,7 @@ parse_format = partial(postcode_parser)
                     {% if post_results %}
                         {% if post_results.valid %}<code>Formatted postcode: {{ post_results.formatted }}</code><br> {% endif %}
                     {% endif %}
-                    <small>Note: this solution only validate formats, not check for postal code existence.</small></div>
+                    <small>Note: this solution only validate formats, not check for postcode existence.</small></div>
             </div>
         </div>
     </div>
