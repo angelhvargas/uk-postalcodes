@@ -8,13 +8,12 @@
                 <h4>Description:</h4>
                 <p>Write a library that supports validating and formatting post codes for UK. The details of which post codes are valid and which are the parts they consist of can be found <a href="https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom#Formatting" target="_blank">here</a>. The API that this library provides is your choice.</p><br><br>
                 <h3>Code</h3>   <var>(Python 3)</var></br></br>
-                <pre style="max-height: 12em; overflow-y: scroll;"><code>from functools import partial
+                <pre style="max-height: 12em; overflow-y: scroll;"><code>
 import re
+from functools import partial
 
 
-THIRD_PART_ONLY = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'S','T', 'U', 'W']
-FOURTH_PART_ONLY = ['A', 'B', 'E', 'H', 'M', 'N', 'P', 'R', 'V', 'W', 'X', 'Y']
-INCODE_PART = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'J', 'L', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'W', 'X', 'Y', 'Z']
+INWARD_ELEM = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'J', 'L', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'W', 'X', 'Y', 'Z']
 
 POSTAL_ZONES = ['AB', 'AL', 'B', 'BA', 'BB', 'BD', 'BH', 'BL', 'BN', 'BR', 'BS', 'BT', 'CA', 'CB', 'CF',
                 'CH', 'CM', 'CO', 'CR', 'CT', 'CV', 'CW', 'DA', 'DD', 'DE', 'DG', 'DH', 'DL', 'DN', 'DT',
@@ -25,27 +24,56 @@ POSTAL_ZONES = ['AB', 'AL', 'B', 'BA', 'BB', 'BD', 'BH', 'BL', 'BN', 'BR', 'BS',
                 'SA', 'SE', 'SG', 'SK', 'SL', 'SM', 'SN', 'SO', 'SP', 'SR', 'SS', 'ST', 'SW', 'SY', 'TA',
                 'TD', 'TF', 'TN', 'TQ', 'TR', 'TS', 'TW', 'UB', 'W', 'WA', 'WC', 'WD', 'WF', 'WN', 'WR',
                 'WS', 'WV', 'YO', 'ZE']
-# single character postal zone case
-SINGLE_CHAR_PS = [zone for zone in POSTAL_ZONES if len(zone) == 1]
-# double character postal zone case
-DOUBLE_CHAR_PS = [zone for zone in POSTAL_ZONES if len(zone) == 2]
+
+# Areas with only single-digit districts
+SINGLE_DIGIT_AREAS = ['BR', 'FY', 'HA', 'HD', 'HG', 'HR', 'HS', 'HX', 'JE', 'LD', 'SM', 'SR', 'WC', 'WN', 'ZE']
+
+# Areas with only double-digit districts
+DOUBLE_DIGIT_AREAS = ['AB', 'LL', 'SO']
+
+# letters to exclude in first position
+FIRST_POSITION_EXCLUDED = ['Q', 'V', 'X']
+
+# letters to be excluded in second position
+SECOND_POSITION_EXCLUDED = ['I', 'J', 'Z']
+
+# The only letters to appear in the third position
+THIRD_PART_ONLY = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'S', 'T', 'U', 'W']
+
+# The only letters to appear in the fourth position
+FOURTH_PART_ONLY = ['A', 'B', 'E', 'H', 'M', 'N', 'P', 'R', 'V', 'W', 'X', 'Y']
+
+# Areas with a district '0' (zero). We exclude BS as this is the only one which accepts 10 and goes up-to 99
+DISTRICT_ZERO_AREAS = ['BL', 'CM', 'CR', 'FY', 'HA', 'PR', 'SL', 'SS']
+
+# single character postal zone cases
+SINGLE_CHAR_PC = [zone for zone in POSTAL_ZONES if len(zone) == 1]
+# double character postal zone cases
+DOUBLE_CHAR_PC = [zone for zone in POSTAL_ZONES if len(zone) == 2
+                  and zone not in (SINGLE_DIGIT_AREAS + DOUBLE_DIGIT_AREAS + DISTRICT_ZERO_AREAS)]
+# outcode
 OUTCODE_REGX = (r'(' +
-                   r'(?:(?:' +
-                   '|'.join(SINGLE_CHAR_PS) +
-                   r')(?:\d[' +
-                   ''.join(THIRD_PART_ONLY) +
-                   r']|\d{1,2}))' +
-                   r'|' +
-                   r'(?:(?:' +
-                   '|'.join(DOUBLE_CHAR_PS) +
-                   r')(?:\d[' +
-                   ''.join(FOURTH_PART_ONLY) +
-                   r']|\d{1,2}))' +
-                   r')')
+                r'(?:(?:' +
+                '|'.join(SINGLE_CHAR_PC) +
+                r')(?:\d[' +
+                ''.join(THIRD_PART_ONLY) +
+                r']|\d{1,2}))' +
+                r'|' +
+                r'(?:(?:' +
+                '|'.join(DOUBLE_CHAR_PC) +
+                r')(?:\d[' +
+                ''.join(FOURTH_PART_ONLY) +
+                r']|[1-9]{1,2}))' +
+                r'|(?:(?:' + '|'.join(SINGLE_DIGIT_AREAS) + ')\d{1})'
+                r'|(?:(?:' + '|'.join(DOUBLE_DIGIT_AREAS) + ')\d[1-9][1-9]{0,1})'
+                r'|(?:(?:' + '|'.join(DISTRICT_ZERO_AREAS) + ')[0-9])'
+                r'|(?:BS(?:[0-9]{0,2}))'
+                r')')
+# incode
 INCODE_PATTERN = (r'(\d[' +
-                  ''.join(INCODE_PART) +
+                  ''.join(INWARD_ELEM) +
                   r'][' +
-                  ''.join(INCODE_PART) +
+                  ''.join(INWARD_ELEM) +
                   r'])')
 POSTCODE_PATTERN = OUTCODE_REGX + INCODE_PATTERN
 STANDALONE_OUTCODE_PATTERN = OUTCODE_REGX + r'\s*$'
@@ -82,7 +110,8 @@ def postcode_parser(postcode, incode_mandatory=True):
     raise ValueError('UK postal code invalid')
 
 
-parse_format = partial(postcode_parser)</code></pre>
+parse_format = partial(postcode_parser)
+                </code></pre>
             </div>
         </div>
         <div class="col-md-auto solution">
