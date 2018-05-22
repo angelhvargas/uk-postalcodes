@@ -58,7 +58,7 @@ OUTWARD_PATTERN = (r'(' +
                    r'|(?:(?:' + '|'.join(SINGLE_DIGIT_AREAS) + ')\d{1})'
                    r'|(?:(?:' + '|'.join(DOUBLE_DIGIT_AREAS) + ')(?:[1-9][1-9]{1,2}))'
                    r'|(?:(?:' + '|'.join(DISTRICT_ZERO_AREAS) + ')[0-9])'
-                   r'|(?:BS[0-9]{0,2})'
+                   r'|(?:(?:' + '|'.join(SPECIAL_AREA_WITH_TEN) + ')[0-9]{0,2})'
                    r')')
 # incode
 INWARD_PATTERN = (r'(\d[' +
@@ -72,7 +72,7 @@ STANDALONE_OUTWARD_PATTERN = OUTWARD_PATTERN + r'\s*$'
 POSTCODE_REGEX = re.compile(POSTCODE_PATTERN)
 STANDALONE_OUTWARD_REGEX = re.compile(STANDALONE_OUTWARD_PATTERN)
 
-print(POSTCODE_PATTERN)
+
 def postcode_parser(postcode, inward_mandatory=True):
     postcode = postcode.replace(' ', '').upper()
 
